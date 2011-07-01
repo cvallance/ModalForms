@@ -21,7 +21,10 @@
                                     document.location.reload(true);
                                 },
                                 error: function (jqXHR, textStatus, errorThrown) {
-                                    alert('There was an error');
+                                    var data = jQuery.parseJSON(jqXHR.responseText);
+                                    if (data && data.errors) {
+                                        alert('We have some errors.');
+                                    }
                                 }
                             });
                         }

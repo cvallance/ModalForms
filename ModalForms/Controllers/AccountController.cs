@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using System.Web.Security;
+using ModalForms.Extensions;
 using ModalForms.Models;
 
 namespace ModalForms.Controllers
@@ -28,10 +29,12 @@ namespace ModalForms.Controllers
                     return JsonNoContent();
                 }
                 
-                ModelState.AddModelError("", "The user name or password provided is incorrect.");
+                ModelState.AddModelError("form", "The user name or password provided is incorrect.");
             }
-            
-            return JsonError();
+
+            var errors = ModelState.GetErrorDictionary();
+
+            return JsonError(errors);
         }
 
         //

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using ModalForms.Models;
 
 namespace ModalForms.Controllers
 {
@@ -15,10 +16,10 @@ namespace ModalForms.Controllers
             return Json(null);
         }
 
-        public JsonResult JsonError()
+        public JsonResult JsonError(ErrorDictionary errors)
         {
             Response.StatusCode = 418;
-            return Json(null);
+            return Json(new { errors });
         }
     }
 }
