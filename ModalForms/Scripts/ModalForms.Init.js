@@ -4,6 +4,9 @@
             var url = this.href;
             var dialogDiv = $('<div style="display: none;"></div>').appendTo('body');
             dialogDiv.load(url, function () {
+                //Enable the client side validation
+                $.validator.unobtrusive.parse($('form', dialogDiv));
+                
                 //Load up the dialog
                 dialogDiv.dialog({
                     autoOpen: true,
