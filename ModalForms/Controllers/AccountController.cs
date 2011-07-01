@@ -11,17 +11,10 @@ namespace ModalForms.Controllers
 {
     public class AccountController : Controller
     {
-
-        //
-        // GET: /Account/LogOn
-
-        public ActionResult LogOn()
+        public PartialViewResult LogOn()
         {
-            return View();
+            return PartialView();
         }
-
-        //
-        // POST: /Account/LogOn
 
         [HttpPost]
         public ActionResult LogOn(LogOnModel model, string returnUrl)
@@ -36,15 +29,11 @@ namespace ModalForms.Controllers
                     {
                         return Redirect(returnUrl);
                     }
-                    else
-                    {
-                        return RedirectToAction("Index", "Home");
-                    }
+
+                    return RedirectToAction("Index", "Home");
                 }
-                else
-                {
-                    ModelState.AddModelError("", "The user name or password provided is incorrect.");
-                }
+                
+                ModelState.AddModelError("", "The user name or password provided is incorrect.");
             }
 
             // If we got this far, something failed, redisplay form
