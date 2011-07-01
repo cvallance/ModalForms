@@ -10,6 +10,10 @@
 
                 var buttons = {
                     "Log On": function () {
+                        //Create a validation summary container
+                        var valSummary = ModalForms.validationSummary();
+                        valSummary.setup($form);
+
                         if ($form.valid()) {
                             var postUrl = $form.attr('action');
                             var formData = $form.serialize();
@@ -23,7 +27,7 @@
                                 error: function (jqXHR, textStatus, errorThrown) {
                                     var data = jQuery.parseJSON(jqXHR.responseText);
                                     if (data && data.errors) {
-                                        alert('We have some errors.');
+                                        valSummary.addErrors(data.errors);
                                     }
                                 }
                             });
