@@ -1,0 +1,23 @@
+﻿@{
+    ViewBag.Title = "Your Details";
+}
+
+@section AdditionalJS {
+    <script src="@Url.Content("~/Scripts/Pages/Account.Details.js")" type="text/javascript"></script>
+}
+
+<h2>Your Details</h2>
+<dl>
+    <dt>User name:</dt>
+    <dd>@ViewBag.UserName</dd>
+    <dt>Email:</dt>
+    <dd>@ViewBag.Email</dd>
+    <dt>Creation date:</dt>
+    <dd>@ViewBag.CreationDate</dd>
+    <dt>Password last changed:</dt>
+    <dd>
+        @ViewBag.LastPasswordChangedDate
+        -
+        @Html.ActionLink("change password", "ChangePassword", null, new { id = "changepassword-link" })
+    </dd>
+</dl>

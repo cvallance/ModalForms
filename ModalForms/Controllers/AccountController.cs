@@ -47,19 +47,13 @@ namespace ModalForms.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        //
-        // GET: /Account/Register
-
-        public ActionResult Register()
+        public PartialViewResult Register()
         {
-            return View();
+            return PartialView();
         }
 
-        //
-        // POST: /Account/Register
-
         [HttpPost]
-        public ActionResult Register(RegisterModel model)
+        public JsonResult Register(RegisterModel model)
         {
             if (ModelState.IsValid)
             {
@@ -69,38 +63,41 @@ namespace ModalForms.Controllers
 
                 if (createStatus == MembershipCreateStatus.Success)
                 {
-                    FormsAuthentication.SetAuthCookie(model.UserName, false /* createPersistentCookie */);
-                    return RedirectToAction("Index", "Home");
+                    return JsonNoContent();
                 }
-                else
-                {
-                    ModelState.AddModelError("", ErrorCodeToString(createStatus));
-                }
+
+                ModelState.AddModelError("", ErrorCodeToString(createStatus));
             }
 
-            // If we got this far, something failed, redisplay form
-            return View(model);
+            var errors = ModelState.GetErrorDictionary();
+
+            return JsonError(errors);
         }
 
-        //
-        // GET: /Account/ChangePassword
-
         [Authorize]
-        public ActionResult ChangePassword()
+        public ActionResult Details()
         {
+            var currentUser = Membership.GetUser(User.Identity.Name, true /* userIsOnline */);
+            ViewBag.UserName = currentUser.UserName;
+            ViewBag.Email = currentUser.Email;
+            ViewBag.CreationDate = currentUser.CreationDate;
+            ViewBag.LastPasswordChangedDate = currentUser.LastPasswordChangedDate;
+
             return View();
         }
 
-        //
-        // POST: /Account/ChangePassword
+        [Authorize]
+        public PartialViewResult ChangePassword()
+        {
+            return PartialView();
+        }
 
         [Authorize]
         [HttpPost]
-        public ActionResult ChangePassword(ChangePasswordModel model)
+        public JsonResult ChangePassword(ChangePasswordModel model)
         {
             if (ModelState.IsValid)
             {
-
                 // ChangePassword will throw an exception rather
                 // than return false in certain failure scenarios.
                 bool changePasswordSucceeded;
@@ -116,16 +113,15 @@ namespace ModalForms.Controllers
 
                 if (changePasswordSucceeded)
                 {
-                    return RedirectToAction("ChangePasswordSuccess");
+                    return JsonNoContent();
                 }
-                else
-                {
-                    ModelState.AddModelError("", "The current password is incorrect or the new password is invalid.");
-                }
+
+                ModelState.AddModelError("form", "The current password is incorrect or the new password is invalid.");
             }
 
-            // If we got this far, something failed, redisplay form
-            return View(model);
+            var errors = ModelState.GetErrorDictionary();
+
+            return JsonError(errors);
         }
 
         //
